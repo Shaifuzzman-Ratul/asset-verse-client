@@ -1,12 +1,21 @@
-import React from 'react';
+import React, { use } from 'react';
 import { useState } from 'react';
 import { FaBars } from 'react-icons/fa';
 import { Link, NavLink } from 'react-router';
+import { AuthContext } from '../../Context/AuthContext/AuthContext';
+import toast from 'react-hot-toast';
 
 const Navbar = () => {
-    const [user, setUser] = useState([]);
+    const { user, LogOut } = use(AuthContext)
     const handleLogout = () => {
-        console.log('logout');
+        LogOut().then(() => {
+            toast.success('Logout Successfull !');
+        }).catch((error) => {
+            // const errorCode = error.code;
+            const errorMessage = error.message;
+            toast.error(errorMessage)
+            // alert(errorCode)
+        })
 
     }
     return (
@@ -86,7 +95,7 @@ const Navbar = () => {
 
 
 
-                        {user && (
+                        {user ? (
                             <div className="dropdown dropdown-end z-50">
                                 <div
                                     tabIndex={0}
@@ -98,14 +107,33 @@ const Navbar = () => {
                                             alt="User Avatar"
                                             referrerPolicy="no-referrer"
                                             src={
-                                                user?.photoURL ||
+                                                user.photoURL ||
                                                 "https://i.ibb.co.com/pv1JCj0X/user.png"
                                             }
                                         />
                                     </div>
                                 </div>
                             </div>
-                        )}
+                        ) :
+                            <div className="dropdown dropdown-end z-50">
+                                <div
+                                    tabIndex={0}
+                                    role="button"
+                                    className="btn btn-ghost btn-circle avatar"
+                                >
+                                    <div className="w-9 border-2 border-gray-300 rounded-full">
+                                        <img
+                                            alt="User Avatar"
+                                            referrerPolicy="no-referrer"
+                                            src={
+
+                                                "https://i.ibb.co.com/pv1JCj0X/user.png"
+                                            }
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+                        }
 
                         {
 
@@ -114,9 +142,9 @@ const Navbar = () => {
 
                         }
 
-                        {
+                        {/* {
                             user ? "" : <Link to="/register"><button className="btn btn-primary">Sign In</button></Link>
-                        }
+                        } */}
                         {/* <button><input
                             type="checkbox"
                             onChange={(e) => handleTheme(e.target.checked)}

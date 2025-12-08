@@ -1,10 +1,28 @@
-import React from 'react';
+import React, { use } from 'react';
 import { useForm } from 'react-hook-form';
+import { AuthContext } from '../../../Context/AuthContext/AuthContext';
+import toast from 'react-hot-toast';
+import { useLocation, useNavigate } from 'react-router';
 
 const EmployRegister = () => {
+    const location = useLocation();
+    const navigate = useNavigate();
     const { register, handleSubmit, formState: { errors } } = useForm();
+    const { createUser, setUser } = use(AuthContext);
     const onSubmit = (data) => {
-        console.log(data);
+        // console.log(data);
+        createUser(data.EmployeeEmail, data.EmployeePass).then((res) => {
+            const user = res.user;
+            setUser(user);
+            toast.success("SignUp Successfull");
+            navigate(`${location.state ? location.state : "/"}`)
+        }).catch((error) => {
+            const errorMessage = error.message;
+            toast.error(errorMessage)
+
+
+        });
+
 
     }
     return (
@@ -33,7 +51,7 @@ const EmployRegister = () => {
                         <input {...register("EmployeeDoB", { min: 18, max: 99 }, { required: true })} type="date" className="input w-full" />
                         {errors.EmployeeDOB && <p className='text-xs text-red-500'>{errors.EmployeeDOB.message}</p>}
 
-                        <div><a className="link link-hover">Forgot password?</a></div>
+                        {/* <div><a className="link link-hover">Forgot password?</a></div> */}
                         <button className="btn btn-neutral mt-4 bg-green-800 border-none">Register Now</button>
                     </fieldset>
 

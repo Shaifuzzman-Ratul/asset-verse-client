@@ -1,16 +1,32 @@
-import axios from 'axios';
-import React from 'react';
+// import axios from 'axios';
+import React, { use } from 'react';
 import { useForm } from 'react-hook-form';
-import { } from 'react-router';
+import { useLocation, useNavigate } from 'react-router';
 import { imageUpload } from '../../../utils';
+import { AuthContext } from '../../../Context/AuthContext/AuthContext';
+import toast from 'react-hot-toast';
 
 const HrRegister = () => {
+    const location = useLocation();
+    const navigate = useNavigate();
     const { register, handleSubmit, formState: { errors } } = useForm();
+    const { createUser, setUser } = use(AuthContext);
     const onSubmit = async (data) => {
         // console.log(data);
         const imageFile = data.CompanyLogo[0];
         // const formData = new FormData();
         // formData.append('image', imageFile);
+        createUser(data.HREmail, data.HRPass).then((res) => {
+            const user = res.user;
+            setUser(user);
+            toast.success("SignUp Successfull");
+            navigate(`${location.state ? location.state : "/"}`)
+        }).catch((error) => {
+            const errorMessage = error.message;
+            toast.error(errorMessage)
+
+
+        });
         try {
             // const { data } = await axios.post(`https://api.imgbb.com/1/upload?key=${import.meta.env.VITE_IMG_API}`, formData)
             // // console.log(data);
@@ -69,7 +85,7 @@ const HrRegister = () => {
                         {errors.HRDoB && <p className='text-xs text-red-500'>{errors.HRDoB.message}</p>}
 
 
-                        <div><a className="link link-hover">Forgot password?</a></div>
+                        {/* <div><a className="link link-hover">Forgot password?</a></div> */}
                         <button className="btn btn-neutral bg-green-800 border-none mt-4">Register Company</button>
                     </fieldset>
 

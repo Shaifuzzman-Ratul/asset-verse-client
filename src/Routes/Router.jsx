@@ -3,6 +3,8 @@ import MainLayOut from "../LayOuts/MainLayOut";
 import Home from "../Pages/Home/Home/Home";
 import HrRegister from "../Pages/Auth/HrRegister/HrRegister";
 import EmployRegister from "../Pages/Auth/EmployRegister/EmployRegister";
+import Login from "../Pages/Auth/Login/Login";
+import Reset from "../Pages/Auth/Forget/Reset";
 
 export const router = createBrowserRouter([
     {
@@ -12,6 +14,15 @@ export const router = createBrowserRouter([
             {
                 index: true,
                 Component: Home
+            },
+            {
+                path: '/login',
+                Component: Login,
+
+            },
+            {
+                path: '/reset',
+                Component: Reset
             },
             {
                 path: "/join-as-Manager",
