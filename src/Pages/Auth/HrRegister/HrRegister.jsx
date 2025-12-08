@@ -1,6 +1,30 @@
+import axios from 'axios';
 import React from 'react';
+import { useForm } from 'react-hook-form';
+import { } from 'react-router';
+import { imageUpload } from '../../../utils';
 
 const HrRegister = () => {
+    const { register, handleSubmit, formState: { errors } } = useForm();
+    const onSubmit = async (data) => {
+        // console.log(data);
+        const imageFile = data.CompanyLogo[0];
+        // const formData = new FormData();
+        // formData.append('image', imageFile);
+        try {
+            // const { data } = await axios.post(`https://api.imgbb.com/1/upload?key=${import.meta.env.VITE_IMG_API}`, formData)
+            // // console.log(data);
+            // const imageURL = data?.data?.display_url
+            const imageURl = await imageUpload(imageFile)
+            console.log(imageURl);
+
+        } catch (error) {
+            console.log(error);
+
+        }
+
+    }
+
     return (
         <div className='flex flex-col lg:flex-row'>
             <div className="flex-1  bg-[url('https://i.ibb.co.com/pr3nSxyp/laptop-office-plant-black-background-top-view.jpg')] hidden lg:block lg:h-screen w-full bg-cover bg-center">
@@ -11,28 +35,39 @@ const HrRegister = () => {
                 {/* <img src="https://i.ibb.co.com/pr3nSxyp/laptop-office-plant-black-background-top-view.jpg" alt="" /> */}
             </div>
             <div className='flex-1 items-center flex justify-center h-full w-full '>
-                <form className='p-6 max-w-md  h-full  w-full' >
+                <form onSubmit={handleSubmit(onSubmit)} className='p-6 max-w-md  h-full  w-full' >
                     <h1 className='text-2xl font-bold  text-center p-3'>Sign Up as an HR Manager</h1>
                     <fieldset className="fieldset justify-center">
                         {/* name */}
+
                         <label className="">Name</label>
-                        <input type="text" className="input w-full" placeholder="Enter Full name" />
+                        <input {...register("HRName", { required: "Name is Required", })} type="text" className="input w-full" placeholder="Enter Full name" />
+                        {errors.HRName && <p className='text-xs text-red-500'>{errors.HRName.message}</p>}
                         {/* company name */}
                         <label className="">Company Name</label>
-                        <input type="text" className="input w-full" placeholder="Enter company name" />
+                        <input  {...register("CompanyName", { required: "Company Name is Required" })} type="text" className="input w-full" placeholder="Enter company name" />
+                        {errors.CompanyName && <p className='text-xs text-red-500'>{errors.CompanyName.message}</p>}
                         {/* logo */}
                         <label className=''>Company Logo </label>
-                        <input type="file" className="file-input file-input-neutral w-full" />
+
+                        <input {...register("CompanyLogo")} type="file" className="file-input file-input-neutral w-full" />
 
                         {/* email */}
                         <label className="">Email</label>
-                        <input type="email" className="input w-full" placeholder="Enter email" />
+                        <input  {...register("HREmail", { required: "Email is Required", })} type="email" className="input w-full" placeholder="Enter email" />
+                        {errors.HREmail && <p className='text-xs text-red-500'>{errors.HREmail.message}</p>}
                         {/* password */}
                         <label className="">Password</label>
-                        <input type="password" className="input w-full" placeholder="Minmum 6 characters" />
+
+                        <input {...register("HRPass", { required: "Password is Required", minLength: { value: 6, message: "Minimun 6 character required" } })} type="password" className="input w-full" placeholder="Minmum 6 characters" />
+
+                        {errors.HRPass && <p className='text-xs text-red-500'>{errors.HRPass.message}</p>}
+
                         {/* date of birth */}
                         <label className="">Date of Birth</label>
-                        <input type="date" className="input w-full" />
+                        <input {...register("HRDoB", { min: 18, max: 99 }, { required: true })} type="date" className="input w-full" />
+                        {errors.HRDoB && <p className='text-xs text-red-500'>{errors.HRDoB.message}</p>}
+
 
                         <div><a className="link link-hover">Forgot password?</a></div>
                         <button className="btn btn-neutral bg-green-800 border-none mt-4">Register Company</button>
