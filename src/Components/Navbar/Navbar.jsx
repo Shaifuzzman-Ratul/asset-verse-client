@@ -94,46 +94,56 @@ const Navbar = () => {
                     <div className="navbar-end gap-3">
 
 
+                        <button className="" popoverTarget="popover-1" style={{ anchorName: "--anchor-1" } /* as React.CSSProperties */}>
+                            {user ? (
+                                <div className="dropdown dropdown-end z-50">
 
-                        {user ? (
-                            <div className="dropdown dropdown-end z-50">
-                                <div
-                                    tabIndex={0}
-                                    role="button"
-                                    className="btn btn-ghost btn-circle avatar"
-                                >
-                                    <div className="w-9 border-2 border-gray-300 rounded-full">
-                                        <img
-                                            alt="User Avatar"
-                                            referrerPolicy="no-referrer"
-                                            src={
-                                                user.photoURL ||
-                                                "https://i.ibb.co.com/pv1JCj0X/user.png"
-                                            }
-                                        />
+                                    <div
+                                        tabIndex={0}
+                                        role="button"
+                                        className="btn btn-ghost btn-circle avatar"
+                                    >
+                                        <div className="w-9 border-2 border-gray-300 rounded-full">
+
+                                            <img
+                                                alt="User Avatar"
+                                                referrerPolicy="no-referrer"
+                                                src={
+                                                    user.photoURL ||
+                                                    "https://i.ibb.co.com/pv1JCj0X/user.png"
+                                                }
+                                            />
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        ) :
-                            <div className="dropdown dropdown-end z-50">
-                                <div
-                                    tabIndex={0}
-                                    role="button"
-                                    className="btn btn-ghost btn-circle avatar"
-                                >
-                                    <div className="w-9 border-2 border-gray-300 rounded-full">
-                                        <img
-                                            alt="User Avatar"
-                                            referrerPolicy="no-referrer"
-                                            src={
+                            ) :
+                                <div className="dropdown dropdown-end z-50">
+                                    <div
+                                        tabIndex={0}
+                                        role="button"
+                                        className="btn btn-ghost btn-circle avatar"
+                                    >
+                                        <div className="w-9 border-2 border-gray-300 rounded-full">
+                                            <img
+                                                alt="User Avatar"
+                                                referrerPolicy="no-referrer"
+                                                src={
 
-                                                "https://i.ibb.co.com/pv1JCj0X/user.png"
-                                            }
-                                        />
+                                                    "https://i.ibb.co.com/pv1JCj0X/user.png"
+                                                }
+                                            />
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        }
+                            }
+                        </button>
+
+                        <ul className="dropdown menu w-52 rounded-box bg-base-100 shadow-sm"
+                            popover="auto" id="popover-1" style={{ positionAnchor: "--anchor-1" } /* as React.CSSProperties */}>
+                            <li> <Link>Profile</Link></li>
+                            <li> <Link to="/dashboard">Dashboard</Link></li>
+                        </ul>
+
 
                         {
 

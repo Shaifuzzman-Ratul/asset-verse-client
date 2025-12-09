@@ -5,17 +5,18 @@ import { useLocation, useNavigate } from 'react-router';
 import { imageUpload } from '../../../utils';
 import { AuthContext } from '../../../Context/AuthContext/AuthContext';
 import toast from 'react-hot-toast';
-
+import axios from 'axios';
 const HrRegister = () => {
     const location = useLocation();
     const navigate = useNavigate();
     const { register, handleSubmit, formState: { errors } } = useForm();
-    const { createUser, setUser } = use(AuthContext);
+    const { createUser, setUser, user } = use(AuthContext);
     const onSubmit = async (data) => {
         // console.log(data);
         const imageFile = data.CompanyLogo[0];
         // const formData = new FormData();
         // formData.append('image', imageFile);
+
         createUser(data.HREmail, data.HRPass).then((res) => {
             const user = res.user;
             setUser(user);
@@ -27,17 +28,36 @@ const HrRegister = () => {
 
 
         });
+
+
         try {
             // const { data } = await axios.post(`https://api.imgbb.com/1/upload?key=${import.meta.env.VITE_IMG_API}`, formData)
             // // console.log(data);
             // const imageURL = data?.data?.display_url
             const imageURl = await imageUpload(imageFile)
             console.log(imageURl);
+            const hrInfo = {
+                hrName: data.HRName,
+                hrEmail: data.HREmail,
+                role: "hr",
+                companyName: data.CompanyName,
+                companyLogo: imageURl,
+                packageLimit: 5,
+                currentEmployees: 0,
+                subscription: 'basic',
+                dateOfBirth: data.HRDoB,
+                createdAt: new Date(),
+                updatedAt: new Date(),
+
+            }
+            axios.post("http://localhost:3000/users", hrInfo)
 
         } catch (error) {
             console.log(error);
 
         }
+
+
 
     }
 
@@ -85,8 +105,8 @@ const HrRegister = () => {
                         {errors.HRDoB && <p className='text-xs text-red-500'>{errors.HRDoB.message}</p>}
 
 
-                        {/* <div><a className="link link-hover">Forgot password?</a></div> */}
-                        <button className="btn btn-neutral bg-green-800 border-none mt-4">Register Company</button>
+                        <button className={`btn btn-neutral mt-4 ${user ? 'bg-gray-600' : 'bg-green-800'} text-white border-none `} disabled={!user}>
+                            {user ? "Already Login" : "Register Now"}</button>
                     </fieldset>
 
                 </form>

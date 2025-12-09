@@ -1,16 +1,27 @@
 import Aos from 'aos';
-import React, { useEffect, useState } from 'react';
+import React, { use, useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet';
 import { useForm } from 'react-hook-form';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
-import { Link } from 'react-router';
+import { Link, useLocation, useNavigate } from 'react-router';
+import { AuthContext } from '../../../Context/AuthContext/AuthContext';
+import toast from 'react-hot-toast';
 
 const Login = () => {
+    const { signIn } = use(AuthContext)
     const [show, setShow] = useState(false);
     const { register, handleSubmit } = useForm();
+    const location = useLocation();
+    const navigate = useNavigate();
     const onSubmit = data => {
         console.log(data);
-
+        signIn(data.email, data.password).then(() => {
+            toast.success('Successfully Logged In!');
+            navigate(location.state ? location.state : "/");
+        })
+            .catch((error) => {
+                toast.error(error.message);
+            });
     }
     const handleShow = () => setShow(!show);
     useEffect(() => {
@@ -43,6 +54,7 @@ const Login = () => {
 
                         <label className="label text-black">Password</label>
                         <input
+                            {...register("password")}
                             name='password'
                             type={show ? "text" : "password"}
                             className="input"

@@ -1,27 +1,50 @@
-import React, { use } from 'react';
+// import React, { use, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { AuthContext } from '../../../Context/AuthContext/AuthContext';
 import toast from 'react-hot-toast';
 import { useLocation, useNavigate } from 'react-router';
+import axios from 'axios';
+import { use } from 'react';
 
 const EmployRegister = () => {
     const location = useLocation();
     const navigate = useNavigate();
+    // const {  } = use(AuthContext)
+
     const { register, handleSubmit, formState: { errors } } = useForm();
-    const { createUser, setUser } = use(AuthContext);
-    const onSubmit = (data) => {
+    const { createUser, setUser, user } = use(AuthContext);
+    // const [isDisable, setIsDisable] = useState(false)
+    // useEffect(() => {
+    //     if (user) {
+    //         setIsDisable(true);
+    //     }
+    // }, [user]);
+    const onSubmit = async (data) => {
         // console.log(data);
-        createUser(data.EmployeeEmail, data.EmployeePass).then((res) => {
+        try {
+            const res = await createUser(data.EmployeeEmail, data.EmployeePass)
             const user = res.user;
             setUser(user);
             toast.success("SignUp Successfull");
+
+            const employeeInfo = {
+                hrName: data.EmployeeName,
+                hrEmail: data.EmployeeEmail,
+                role: "employee",
+                dateOfBirth: data.EmployeeDoB,
+                createdAt: new Date(),
+                updatedAt: new Date(),
+
+            }
+            await axios.post("http://localhost:3000/users", employeeInfo);
             navigate(`${location.state ? location.state : "/"}`)
-        }).catch((error) => {
+
+        } catch (error) {
             const errorMessage = error.message;
             toast.error(errorMessage)
 
+        }
 
-        });
 
 
     }
@@ -51,8 +74,8 @@ const EmployRegister = () => {
                         <input {...register("EmployeeDoB", { min: 18, max: 99 }, { required: true })} type="date" className="input w-full" />
                         {errors.EmployeeDOB && <p className='text-xs text-red-500'>{errors.EmployeeDOB.message}</p>}
 
-                        {/* <div><a className="link link-hover">Forgot password?</a></div> */}
-                        <button className="btn btn-neutral mt-4 bg-green-800 border-none">Register Now</button>
+                        <button className={`btn btn-neutral mt-4 ${user ? 'bg-gray-600' : 'bg-green-800'} text-white border-none `} disabled={!user}>
+                            {user ? "Already Login" : "Register Now"}</button>
                     </fieldset>
 
                 </form>

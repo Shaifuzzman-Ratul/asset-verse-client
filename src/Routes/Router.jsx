@@ -5,6 +5,8 @@ import HrRegister from "../Pages/Auth/HrRegister/HrRegister";
 import EmployRegister from "../Pages/Auth/EmployRegister/EmployRegister";
 import Login from "../Pages/Auth/Login/Login";
 import Reset from "../Pages/Auth/Forget/Reset";
+import DashDoard from "../LayOuts/DashDoard";
+import PrivateRoute from "../Context/AuthContext/PrivateRoute";
 
 export const router = createBrowserRouter([
     {
@@ -34,4 +36,14 @@ export const router = createBrowserRouter([
             }
         ]
     },
+    {
+        path: "/dashboard",
+        element: <PrivateRoute><DashDoard></DashDoard></PrivateRoute>,
+        children: [
+            {
+                path: 'demo',
+                element: <p>Hell yea</p>
+            }
+        ]
+    }
 ]);
