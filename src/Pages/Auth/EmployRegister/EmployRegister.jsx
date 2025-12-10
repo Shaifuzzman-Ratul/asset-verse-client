@@ -30,6 +30,7 @@ const EmployRegister = () => {
             const employeeInfo = {
                 hrName: data.EmployeeName,
                 hrEmail: data.EmployeeEmail,
+                email: data.EmployeeEmail,
                 role: "employee",
                 dateOfBirth: data.EmployeeDoB,
                 createdAt: new Date(),
