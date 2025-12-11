@@ -75,7 +75,7 @@ const DashDoard = () => {
                             {/* data-tip="Homepage" */}
 
                             <li>
-                                {userInfo?.role === "hr" ? <Link to="/" className="is-drawer-close:tooltip is-drawer-close:tooltip-right" >
+                                {userInfo?.role === "hr" ? <Link to="/dashboard/asset-list" className="is-drawer-close:tooltip is-drawer-close:tooltip-right" >
                                     {/* Home icon */}
                                     <FaTableList />
                                     <span className="is-drawer-close:hidden">Asset List</span>

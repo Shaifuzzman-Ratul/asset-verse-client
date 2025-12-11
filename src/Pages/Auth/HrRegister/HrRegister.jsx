@@ -51,6 +51,7 @@ const HrRegister = () => {
                 updatedAt: new Date(),
 
             }
+
             axios.post("http://localhost:3000/users", hrInfo)
 
         } catch (error) {

@@ -1,17 +1,37 @@
 import React, { use } from "react";
-import { useForm, useWatch } from "react-hook-form";
+import { useForm, } from "react-hook-form";
 import { AuthContext } from "../../../Context/AuthContext/AuthContext";
 import { imageUpload } from "../../../utils";
 import toast from "react-hot-toast";
+import axios from "axios";
+import { useQuery } from "@tanstack/react-query";
 
 const AddAsset = () => {
     const { user } = use(AuthContext);
+
+    const { data } = useQuery({
+        queryKey: ['users', user?.email],
+        enabled: !!user?.email,
+        queryFn: async () => {
+            const res = await axios.get(`http://localhost:3000/users?email=${user.email}`);
+
+            return res.data;
+
+        }
+
+    })
     const {
         register,
         handleSubmit,
-        control,
+
         formState: { errors },
-    } = useForm();
+    } = useForm({
+        defaultValues: {
+            productQuantity: 0,
+        }
+    });
+
+    const company = data?.[0].companyName;
 
     const handleFormSubmit = async (data) => {
         console.log(data);
@@ -21,11 +41,18 @@ const AddAsset = () => {
         try {
             const imageURL = await imageUpload(imageFile);
             console.log(imageURL);
+            data.assetImage = imageURL;
+            data.createAt = new Date();
+            data.companyName = company;
+            axios.post("http://localhost:3000/allAsset", data)
+
             toast.success("Successfully added")
         } catch (error) {
-            console.log(error);
+            console.log(error.message);
         }
+
     };
+
 
     return (
         <div className="w-full p-10">
@@ -92,6 +119,7 @@ const AddAsset = () => {
                     <div className="flex flex-col">
                         <label className="font-bold">Product Quantity</label>
                         <input
+                            // defaultValue={0}
                             type="number"
                             className="input input-bordered w-full"
                             placeholder="Quantity"

@@ -8,6 +8,7 @@ import Reset from "../Pages/Auth/Forget/Reset";
 import DashDoard from "../LayOuts/DashDoard";
 import PrivateRoute from "../Context/AuthContext/PrivateRoute";
 import AddAsset from "../Pages/DashBoardPages/HR/AddAsset";
+import AssetList from "../Pages/DashBoardPages/HR/AssetList";
 
 export const router = createBrowserRouter([
     {
@@ -44,6 +45,9 @@ export const router = createBrowserRouter([
             {
                 path: 'add-asset',
                 element: <AddAsset></AddAsset>
+            }, {
+                path: 'asset-list',
+                element: <AssetList></AssetList>
             }
         ]
     }
