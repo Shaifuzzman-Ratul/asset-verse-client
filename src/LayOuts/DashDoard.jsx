@@ -9,11 +9,22 @@ import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import { FiGitPullRequest } from 'react-icons/fi';
 import { CgProfile } from 'react-icons/cg';
+import toast from 'react-hot-toast';
 
 const DashDoard = () => {
-    const { user } = use(AuthContext);
+    const { user, LogOut } = use(AuthContext);
     // console.log(user);
+    const handleLogout = () => {
+        LogOut().then(() => {
+            toast.success('Logout Successfull !');
+        }).catch((error) => {
+            // const errorCode = error.code;
+            const errorMessage = error.message;
+            toast.error(errorMessage)
+            // alert(errorCode)
+        })
 
+    }
     const { data } = useQuery({
         queryKey: ['users', user?.email],
         enabled: !!user?.email,
@@ -76,7 +87,7 @@ const DashDoard = () => {
                             </li>
 
                             <li>
-                                {userInfo?.role === "hr" ? <Link to="/" className="is-drawer-close:tooltip is-drawer-close:tooltip-right" >
+                                {userInfo?.role === "hr" ? <Link to="/dashboard/add-asset" className="is-drawer-close:tooltip is-drawer-close:tooltip-right" >
                                     {/* Home icon */}
                                     <IoIosAddCircle />
                                     <span className="is-drawer-close:hidden">Add an Asset</span>
@@ -124,7 +135,7 @@ const DashDoard = () => {
 
                                     <span className="is-drawer-close:hidden">Profile</span>
                                 </Link> </li>
-                            <li>
+                            <li onClick={handleLogout}>
                                 <Link to="/" className="is-drawer-close:tooltip is-drawer-close:tooltip-right" >
                                     {/* Home icon */}
                                     <MdLogout />

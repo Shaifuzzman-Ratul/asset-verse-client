@@ -75,7 +75,7 @@ const EmployRegister = () => {
                         <input {...register("EmployeeDoB", { min: 18, max: 99 }, { required: true })} type="date" className="input w-full" />
                         {errors.EmployeeDOB && <p className='text-xs text-red-500'>{errors.EmployeeDOB.message}</p>}
 
-                        <button className={`btn btn-neutral mt-4 ${user ? 'bg-gray-600' : 'bg-green-800'} text-white border-none `} disabled={!user}>
+                        <button className={`btn btn-neutral mt-4 ${user ? 'bg-gray-600' : 'bg-green-800'} text-white border-none `} >
                             {user ? "Already Login" : "Register Now"}</button>
                     </fieldset>
 

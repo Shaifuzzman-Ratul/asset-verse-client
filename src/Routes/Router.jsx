@@ -7,11 +7,12 @@ import Login from "../Pages/Auth/Login/Login";
 import Reset from "../Pages/Auth/Forget/Reset";
 import DashDoard from "../LayOuts/DashDoard";
 import PrivateRoute from "../Context/AuthContext/PrivateRoute";
+import AddAsset from "../Pages/DashBoardPages/HR/AddAsset";
 
 export const router = createBrowserRouter([
     {
         path: "/",
-        Component: MainLayOut,
+        element: <MainLayOut></MainLayOut>,
         children: [
             {
                 index: true,
@@ -41,8 +42,8 @@ export const router = createBrowserRouter([
         element: <PrivateRoute><DashDoard></DashDoard></PrivateRoute>,
         children: [
             {
-                path: 'demo',
-                element: <p>Hell yea</p>
+                path: 'add-asset',
+                element: <AddAsset></AddAsset>
             }
         ]
     }
