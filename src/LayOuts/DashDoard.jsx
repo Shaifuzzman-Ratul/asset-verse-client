@@ -91,7 +91,7 @@ const DashDoard = () => {
                                     {/* Home icon */}
                                     <IoIosAddCircle />
                                     <span className="is-drawer-close:hidden">Add an Asset</span>
-                                </Link> : <Link to="/" className="is-drawer-close:tooltip is-drawer-close:tooltip-right" >
+                                </Link> : <Link to="/dashboard/request-asset" className="is-drawer-close:tooltip is-drawer-close:tooltip-right" >
                                     {/* Home icon */}
                                     <FiGitPullRequest />
 

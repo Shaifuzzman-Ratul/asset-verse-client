@@ -9,6 +9,7 @@ import DashDoard from "../LayOuts/DashDoard";
 import PrivateRoute from "../Context/AuthContext/PrivateRoute";
 import AddAsset from "../Pages/DashBoardPages/HR/AddAsset";
 import AssetList from "../Pages/DashBoardPages/HR/AssetList";
+import RequestAsset from "../Pages/DashBoardPages/Employee/RequestAsset";
 
 export const router = createBrowserRouter([
     {
@@ -48,6 +49,9 @@ export const router = createBrowserRouter([
             }, {
                 path: 'asset-list',
                 element: <AssetList></AssetList>
+            }, {
+                path: "request-asset",
+                element: <RequestAsset></RequestAsset>
             }
         ]
     }
