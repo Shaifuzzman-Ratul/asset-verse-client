@@ -2,37 +2,15 @@ import axios from 'axios';
 import React, { use, useState } from 'react';
 import { AuthContext } from '../../../Context/AuthContext/AuthContext';
 import { useQuery } from '@tanstack/react-query';
+import toast from 'react-hot-toast';
 
-// const dummyAssets = [
-//     {
-//         productName: "Laptop",
-//         assetImage: "https://i.ibb.co/kswjv0Xw/Screenshot-2025-03-17-220700.png",
-//         assetType: "returnable",
-//         availableQuantity: 5,
-//     },
-//     {
-//         productName: "Mouse",
-//         assetImage: "https://i.ibb.co/39MrQZ0L/Screenshot-2025-09-18-125656.png",
-//         assetType: "non-returnable",
-//         availableQuantity: 10,
-//     },
-//     {
-//         productName: "Keyboard",
-//         assetImage: "https://i.ibb.co/XYZ/keyboard.png",
-//         assetType: "returnable",
-//         availableQuantity: 7,
-//     },
-//     {
-//         productName: "Monitor",
-//         assetImage: "https://i.ibb.co/XYZ/monitor.png",
-//         assetType: "returnable",
-//         availableQuantity: 3,
-//     },
-// ];
+
 
 const RequestAsset = () => {
     const [selectedAsset, setSelectedAsset] = useState(null);
     const [note, setNote] = useState("");
+    const { user } = use(AuthContext);
+    console.log(user);
 
     const openModal = (asset) => {
         setSelectedAsset(asset);
@@ -43,26 +21,60 @@ const RequestAsset = () => {
         setNote("");
     };
 
-    const handleRequestSubmit = (e) => {
+
+
+    const { data: allAsset = [], refetch } = useQuery({
+        queryKey: ['allAsset'],
+        queryFn: async () => {
+            const res = await axios.get('http://localhost:3000/allAsset'); // 
+            return res.data;
+        }
+    });
+    console.log(allAsset);
+
+    const { data: assetRequest = [], refetch: refetchRequest } = useQuery({
+        queryKey: ['myRequest', user?.email],
+        queryFn: async () => {
+            const res = await axios.get(`http://localhost:3000/assetRequest?email=${user.email}`);
+            return res.data
+        }
+    })
+
+
+
+    const handleRequestSubmit = async (e) => {
         e.preventDefault();
+        const note = e.target.note.value;
         console.log({
             asset: selectedAsset,
             note,
             status: "pending",
         });
-        alert(`Request submitted for ${selectedAsset.productName}`);
+
+
+
+        const info = {
+            assetId: selectedAsset._id,
+            assetName: selectedAsset.productName,
+            assetType: selectedAsset.assetType,
+            requesterName: user.displayName,
+            requesterEmail: user.email,
+            hrEmail: selectedAsset.userEmail, // HR email from asset
+            companyName: selectedAsset.companyName,
+            requestDate: new Date(),
+            approvalDate: null,
+            requestStatus: "pending",
+            note,
+            processedBy: null,
+        };
+
+        await axios.post('http://localhost:3000/assetRequest', info);
+
+        toast.success("Request submitted")
+        refetch()
+        refetchRequest()
         closeModal();
     };
-
-    const { data: allAsset = [], refetch } = useQuery({
-        queryKey: ['allAsset'], // no email key
-        queryFn: async () => {
-            const res = await axios.get('http://localhost:3000/allAsset'); // no ?email=
-            return res.data;
-        }
-    });
-
-    console.log(allAsset);
 
     return (
         <div className="p-6">
@@ -78,12 +90,24 @@ const RequestAsset = () => {
                         <h2 className="text-xl font-semibold">{asset.productName}</h2>
                         <p className="text-gray-500 capitalize">{asset.assetType}</p>
                         <p className="font-bold mt-2">Available: {asset.productQuantity}</p>
-                        <button
-                            className="mt-4 btn bg-green-800 text-white w-full"
-                            onClick={() => openModal(asset)}
-                        >
-                            Request
-                        </button>
+
+                        {
+                            assetRequest.some(
+                                (req) =>
+                                    req.assetId.toString() === asset._id.toString()
+                                    && req.requestStatus === "pending"
+                            )
+                                ?
+                                <button className="mt-4 btn bg-yellow-500 text-white w-full" disabled>
+                                    Pending...
+                                </button> :
+                                <button
+                                    className="mt-4 btn bg-green-800 text-white w-full"
+                                    onClick={() => openModal(asset)}
+                                >
+                                    Request
+                                </button>
+                        }
                     </div>
                 ))}
             </div>
@@ -106,6 +130,7 @@ const RequestAsset = () => {
                             <label>
                                 Note:
                                 <textarea
+                                    name='note'
                                     value={note}
                                     onChange={(e) => setNote(e.target.value)}
                                     placeholder="Add a note (optional)"
