@@ -10,6 +10,8 @@ import PrivateRoute from "../Context/AuthContext/PrivateRoute";
 import AddAsset from "../Pages/DashBoardPages/HR/AddAsset";
 import AssetList from "../Pages/DashBoardPages/HR/AssetList";
 import RequestAsset from "../Pages/DashBoardPages/Employee/RequestAsset";
+import MyTeam from "../Pages/DashBoardPages/Employee/MyTeam";
+import AllRequestsPage from "../Pages/DashBoardPages/HR/AllRequestPage";
 
 export const router = createBrowserRouter([
     {
@@ -52,6 +54,13 @@ export const router = createBrowserRouter([
             }, {
                 path: "request-asset",
                 element: <RequestAsset></RequestAsset>
+            }, {
+                path: 'my-team',
+                element: <MyTeam></MyTeam>
+            },
+            {
+                path: 'all-request',
+                element: <AllRequestsPage></AllRequestsPage>
             }
         ]
     }

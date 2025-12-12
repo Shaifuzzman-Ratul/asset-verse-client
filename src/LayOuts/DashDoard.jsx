@@ -101,11 +101,11 @@ const DashDoard = () => {
 
 
                             <li>
-                                {userInfo?.role === "hr" ? <Link to="/" className="is-drawer-close:tooltip is-drawer-close:tooltip-right" >
+                                {userInfo?.role === "hr" ? <Link to="/dashboard/all-request" className="is-drawer-close:tooltip is-drawer-close:tooltip-right" >
                                     {/* Home icon */}
                                     <FiGitPullRequest />
                                     <span className="is-drawer-close:hidden">All Requests</span>
-                                </Link> : <Link to="/" className="is-drawer-close:tooltip is-drawer-close:tooltip-right" >
+                                </Link> : <Link to="/dashboard/my-team" className="is-drawer-close:tooltip is-drawer-close:tooltip-right" >
                                     {/* Home icon */}
                                     <FaPeopleGroup />
 

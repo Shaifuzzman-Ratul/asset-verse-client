@@ -40,6 +40,10 @@ const RequestAsset = () => {
         }
     })
 
+    console.log(assetRequest);
+    const status = assetRequest.requestStatus;
+    console.log(status);
+
 
 
     const handleRequestSubmit = async (e) => {
@@ -101,50 +105,79 @@ const RequestAsset = () => {
                                 <button className="mt-4 btn bg-yellow-500 text-white w-full" disabled>
                                     Pending...
                                 </button> :
-                                <button
-                                    className="mt-4 btn bg-green-800 text-white w-full"
+
+                                (assetRequest.some(
+                                    (req) =>
+                                        req.assetId.toString() === asset._id.toString()
+                                        && req.requestStatus === "Rejected"
+                                ) ? <button
+                                    className="mt-4 btn bg-red-800 text-white w-full"
                                     onClick={() => openModal(asset)}
                                 >
-                                    Request
-                                </button>
+                                    Rejected
+                                </button> :
+
+                                    (assetRequest.some(
+                                        (req) =>
+                                            req.assetId.toString() === asset._id.toString()
+                                            && req.requestStatus === "approved"
+                                    ) ? < button
+                                        className="mt-4 btn bg-blue-500 text-white w-full" disabled
+                                        onClick={() => openModal(asset)}
+                                    >
+                                        Approved
+                                    </button> :
+                                        < button
+                                            className="mt-4 btn bg-green-800 text-white w-full"
+                                            onClick={() => openModal(asset)}
+                                        >
+                                            Request
+                                        </button>
+
+                                    )
+
+                                )
+
                         }
                     </div>
                 ))}
             </div>
 
             {/* Modal */}
-            {selectedAsset && (
-                <dialog open className="modal">
-                    <div className="modal-box relative">
-                        <button
-                            className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"
-                            onClick={closeModal}
-                        >
-                            ✕
-                        </button>
-                        <h3 className="text-lg font-bold mb-4">Request Asset</h3>
-                        <form onSubmit={handleRequestSubmit} className="flex flex-col gap-4">
-                            <p>
-                                Asset: <span className="font-semibold">{selectedAsset.productName}</span>
-                            </p>
-                            <label>
-                                Note:
-                                <textarea
-                                    name='note'
-                                    value={note}
-                                    onChange={(e) => setNote(e.target.value)}
-                                    placeholder="Add a note (optional)"
-                                    className="input input-bordered w-full h-24 mt-1"
-                                />
-                            </label>
-                            <button type="submit" className="btn btn-success w-full">
-                                Submit Request
+            {
+                selectedAsset && (
+                    <dialog open className="modal">
+                        <div className="modal-box relative">
+                            <button
+                                className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"
+                                onClick={closeModal}
+                            >
+                                ✕
                             </button>
-                        </form>
-                    </div>
-                </dialog>
-            )}
-        </div>
+                            <h3 className="text-lg font-bold mb-4">Request Asset</h3>
+                            <form onSubmit={handleRequestSubmit} className="flex flex-col gap-4">
+                                <p>
+                                    Asset: <span className="font-semibold">{selectedAsset.productName}</span>
+                                </p>
+                                <label>
+                                    Note:
+                                    <textarea
+                                        name='note'
+                                        value={note}
+                                        onChange={(e) => setNote(e.target.value)}
+                                        placeholder="Add a note (optional)"
+                                        className="input input-bordered w-full h-24 mt-1"
+                                    />
+                                </label>
+                                <button type="submit" className="btn btn-success w-full">
+                                    Submit Request
+                                </button>
+                            </form>
+                        </div>
+                    </dialog>
+                )
+            }
+        </div >
     );
 };
 
