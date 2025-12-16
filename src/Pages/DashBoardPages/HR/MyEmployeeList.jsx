@@ -4,12 +4,13 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import { AuthContext } from "../../../Context/AuthContext/AuthContext";
 import Loader from "../../../Components/Loader/Loader";
+import Swal from "sweetalert2";
 
 const MyEmployeeList = () => {
     const { user } = useContext(AuthContext);
     const hrEmail = user?.email;
 
-    // Fetch employees connected to HR
+
     const { data: employees = [], refetch, isLoading } = useQuery({
         queryKey: ["employees", hrEmail],
         enabled: !!hrEmail,
@@ -21,7 +22,7 @@ const MyEmployeeList = () => {
         },
     });
 
-    // Fetch asset count per employee
+
     const { data: assetRequests = [] } = useQuery({
         queryKey: ["assetRequests"],
         queryFn: async () => {
@@ -30,24 +31,37 @@ const MyEmployeeList = () => {
         },
     });
 
-    // Remove employee without useMutation
-    const handleRemove = async (employee) => {
-        const confirmDelete = window.confirm(
-            `Are you sure you want to remove ${employee.employeeName} from your team?`
-        );
-        if (!confirmDelete) return;
 
-        try {
-            await axios.delete(
-                `http://localhost:3000/employeeAffiliations/${employee._id}`
-            );
-            toast.success("Employee removed from team");
-            refetch(); // Refresh the employee list
-        } catch (error) {
-            toast.error("Failed to remove employee");
-            console.error(error);
-        }
+    const handleRemove = (employee) => {
+        Swal.fire({
+            title: "Are you sure?",
+            text: "You won't be able to revert this!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, delete it!"
+        }).then(async (result) => {  // <-- make this async
+            if (result.isConfirmed) {
+                try {
+                    await axios.delete(
+                        `http://localhost:3000/employeeAffiliations/${employee._id}`
+                    );
+                    toast.success("Employee removed from team");
+                    refetch();
+                    Swal.fire(
+                        "Deleted!",
+                        "Employee has been removed.",
+                        "success"
+                    );
+                } catch (error) {
+                    toast.error("Failed to remove employee");
+                    console.error(error);
+                }
+            }
+        });
     };
+
 
     if (isLoading) {
         return (

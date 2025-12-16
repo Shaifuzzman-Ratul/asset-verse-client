@@ -54,8 +54,10 @@ const DashDoard = () => {
                         <div className="px-4 font-bold ">{userInfo?.role === 'hr' ? "HR Dashboard" : "Employee Dashboard"}</div>
                     </nav>
                     {/* Page content here */}
-                    <Outlet></Outlet>
-                    <div className="p-4">Page Content</div>
+                    <div className=' bg-gray-200 h-full'>
+                        <Outlet></Outlet>
+                    </div>
+
                 </div>
 
                 <div className="drawer-side is-drawer-close:overflow-visible">
@@ -129,7 +131,7 @@ const DashDoard = () => {
                                 </Link>}
                             </li>
                             <li>
-                                <Link to="/" className="is-drawer-close:tooltip is-drawer-close:tooltip-right" >
+                                <Link to="/dashboard/profile" className="is-drawer-close:tooltip is-drawer-close:tooltip-right" >
                                     {/* Home icon */}
                                     <CgProfile />
 

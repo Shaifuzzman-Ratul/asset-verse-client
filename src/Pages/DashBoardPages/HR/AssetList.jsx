@@ -70,14 +70,14 @@ const AssetList = () => {
 
     return (
         <div>
-            <div className="m-6">
-                <input
+            <div className="">
+                <div className='p-7'><input
                     type="text"
                     placeholder="Search assets"
                     className="input input-bordered w-full md:w-1/3"
                     value={searchTerm}
                     onChange={e => setSearchTerm(e.target.value)}
-                />
+                /></div>
             </div>
             <div className="overflow-x-auto">
                 <table className="table">

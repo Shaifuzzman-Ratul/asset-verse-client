@@ -13,6 +13,7 @@ import RequestAsset from "../Pages/DashBoardPages/Employee/RequestAsset";
 import MyTeam from "../Pages/DashBoardPages/Employee/MyTeam";
 import AllRequestsPage from "../Pages/DashBoardPages/HR/AllRequestPage";
 import MyEmployeeList from "../Pages/DashBoardPages/HR/MyEmployeeList";
+import Profile from "../Shared/Profile";
 
 export const router = createBrowserRouter([
     {
@@ -65,6 +66,9 @@ export const router = createBrowserRouter([
             }, {
                 path: 'my-employee',
                 element: <MyEmployeeList></MyEmployeeList>
+            }, {
+                path: 'profile',
+                element: <Profile></Profile>
             }
         ]
     }
