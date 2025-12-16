@@ -1,9 +1,11 @@
-import React from 'react';
+import React, { use } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import toast from 'react-hot-toast';
+import { AuthContext } from '../../../Context/AuthContext/AuthContext';
 
 const AllRequestsPage = () => {
+    const { user } = use(AuthContext)
     const { data: assetRequests = [], refetch } = useQuery({
         queryKey: ['allRequests'],
         queryFn: async () => {
@@ -12,12 +14,39 @@ const AllRequestsPage = () => {
         },
     });
 
+    const hrMail = user.email;
+    const { data: allUser = [] } = useQuery({
+        queryKey: ['users', user?.email],
+        enabled: !!user?.email,
+        queryFn: async () => {
+            const res = await axios.get(`http://localhost:3000/users?email=${user.email}`);
+
+            return res.data;
+        }
+    })
+
+
+
     const handleApprove = async (request) => {
         await axios.put(`http://localhost:3000/assetRequest/${request._id}`, {
             requestStatus: 'approved',
             approvalDate: new Date(),
-            processedBy: 'HR',
+            processedBy: hrMail,
         });
+        const res = await axios.get(`http://localhost:3000/employeeAffiliations?hrEmail=${hrMail}`);
+        const affiliations = res.data;
+        const existing = affiliations.find(
+            (aff) => aff.employeeEmail === request.requesterEmail && aff.hrEmail === user.email
+        );
+        if (!existing) {
+            await axios.post('http://localhost:3000/employeeAffiliations', {
+                employeeEmail: request.requesterEmail,
+                employeeName: request.requesterName,
+                hrEmail: user.email,
+                companyName: request.companyName,
+                companyLogo: allUser[0].companyLogo,
+            });
+        }
         toast.success('Request approved');
         refetch();
     };
@@ -26,7 +55,7 @@ const AllRequestsPage = () => {
         await axios.put(`http://localhost:3000/assetRequest/${request._id}`, {
             requestStatus: 'Rejected',
             approvalDate: new Date(),
-            processedBy: 'HR',
+            processedBy: hrMail,
         });
         toast.error('Request rejected');
         refetch();

@@ -12,6 +12,7 @@ import AssetList from "../Pages/DashBoardPages/HR/AssetList";
 import RequestAsset from "../Pages/DashBoardPages/Employee/RequestAsset";
 import MyTeam from "../Pages/DashBoardPages/Employee/MyTeam";
 import AllRequestsPage from "../Pages/DashBoardPages/HR/AllRequestPage";
+import MyEmployeeList from "../Pages/DashBoardPages/HR/MyEmployeeList";
 
 export const router = createBrowserRouter([
     {
@@ -61,6 +62,9 @@ export const router = createBrowserRouter([
             {
                 path: 'all-request',
                 element: <AllRequestsPage></AllRequestsPage>
+            }, {
+                path: 'my-employee',
+                element: <MyEmployeeList></MyEmployeeList>
             }
         ]
     }

@@ -37,7 +37,7 @@ const DashDoard = () => {
 
     })
     // console.log('user:', user);
-    console.log('data:', data);
+    // console.log('data:', data);
     const userInfo = data?.[0];
     return (
         <div>
@@ -114,7 +114,7 @@ const DashDoard = () => {
                                 </Link>}
                             </li>
                             <li>
-                                {userInfo?.role === 'hr' && <Link to="/" className="is-drawer-close:tooltip is-drawer-close:tooltip-right" >
+                                {userInfo?.role === 'hr' && <Link to="/dashboard/my-employee" className="is-drawer-close:tooltip is-drawer-close:tooltip-right" >
                                     {/* Home icon */}
                                     <FaPeopleGroup />
                                     <span className="is-drawer-close:hidden"> My Employee</span>

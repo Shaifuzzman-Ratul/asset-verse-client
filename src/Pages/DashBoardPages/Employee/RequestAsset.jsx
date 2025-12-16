@@ -30,7 +30,7 @@ const RequestAsset = () => {
             return res.data;
         }
     });
-    console.log(allAsset);
+    // console.log(allAsset);
 
     const { data: assetRequest = [], refetch: refetchRequest } = useQuery({
         queryKey: ['myRequest', user?.email],
@@ -40,20 +40,20 @@ const RequestAsset = () => {
         }
     })
 
-    console.log(assetRequest);
-    const status = assetRequest.requestStatus;
-    console.log(status);
+    // console.log(assetRequest);
+    // const status = assetRequest.requestStatus;
+    // console.log(status);
 
 
 
     const handleRequestSubmit = async (e) => {
         e.preventDefault();
         const note = e.target.note.value;
-        console.log({
-            asset: selectedAsset,
-            note,
-            status: "pending",
-        });
+        // console.log({
+        //     asset: selectedAsset,
+        //     note,
+        //     status: "pending",
+        // });
 
 
 
@@ -63,7 +63,7 @@ const RequestAsset = () => {
             assetType: selectedAsset.assetType,
             requesterName: user.displayName,
             requesterEmail: user.email,
-            hrEmail: selectedAsset.userEmail, // HR email from asset
+            hrEmail: selectedAsset.userEmail,
             companyName: selectedAsset.companyName,
             requestDate: new Date(),
             approvalDate: null,
