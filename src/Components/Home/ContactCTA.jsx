@@ -3,7 +3,7 @@ import { FaEnvelope, FaPhoneAlt } from "react-icons/fa";
 
 const ContactCTA = () => {
     return (
-        <section className="bg-green-900 py-16 text-white mb-5">
+        <div data-aos="fade-up" > <section className="bg-green-900 py-16 text-white mb-5">
             <div className="max-w-4xl mx-auto px-6 text-center">
 
 
@@ -34,7 +34,7 @@ const ContactCTA = () => {
                     We aim to respond within 24 hours.
                 </p>
             </div>
-        </section>
+        </section></div >
     );
 };
 

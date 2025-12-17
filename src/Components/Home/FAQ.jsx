@@ -1,15 +1,9 @@
 import Aos from "aos";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { FaChevronDown } from "react-icons/fa";
-const HowITWorks = () => {
-    useEffect(() => {
-        Aos.init({
-            duration: 950,
-            once: false,
-            offset: 100,
-        });
-    }, []);
-}
+
+
+
 const faqs = [
     {
         question: "What is Asset Verse?",
