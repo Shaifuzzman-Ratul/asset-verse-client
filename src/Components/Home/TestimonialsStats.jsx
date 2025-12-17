@@ -29,7 +29,7 @@ const testimonials = [
 
 const TestimonialsStats = () => {
     return (
-        <section className="bg-gray-50 py-16">
+        <div data-aos="fade-down" > <section className="bg-gray-50 py-16">
             <div className="max-w-7xl mx-auto px-6">
 
 
@@ -81,7 +81,7 @@ const TestimonialsStats = () => {
 
 
             </div>
-        </section>
+        </section></div >
     );
 };
 
