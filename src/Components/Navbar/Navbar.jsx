@@ -39,7 +39,6 @@ const Navbar = () => {
 
     return (
         <div className="navbar bg-base-100 shadow-sm lg:px-6">
-            {/* ================= LEFT ================= */}
             <div className="navbar-start">
                 <div
                     className="tooltip tooltip-right"
@@ -69,7 +68,7 @@ const Navbar = () => {
                             {dbUser?.role === "employee" && (
                                 <>
                                     <li>
-                                        <NavLink to="/dashboard/my-assets">My Assets</NavLink>
+                                        <NavLink to="/dashboard">My Assets</NavLink>
                                     </li>
                                     <li>
                                         <NavLink to="/dashboard/my-team">My Team</NavLink>

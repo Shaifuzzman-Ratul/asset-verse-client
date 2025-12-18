@@ -14,6 +14,7 @@ import MyTeam from "../Pages/DashBoardPages/Employee/MyTeam";
 import AllRequestsPage from "../Pages/DashBoardPages/HR/AllRequestPage";
 import MyEmployeeList from "../Pages/DashBoardPages/HR/MyEmployeeList";
 import Profile from "../Shared/Profile";
+import MyAssets from "../Pages/DashBoardPages/Employee/MyAssets";
 
 export const router = createBrowserRouter([
     {
@@ -46,30 +47,34 @@ export const router = createBrowserRouter([
     {
         path: "/dashboard",
         element: <PrivateRoute><DashDoard></DashDoard></PrivateRoute>,
-        children: [
-            {
-                path: 'add-asset',
-                element: <AddAsset></AddAsset>
-            }, {
-                path: 'asset-list',
-                element: <AssetList></AssetList>
-            }, {
-                path: "request-asset",
-                element: <RequestAsset></RequestAsset>
-            }, {
-                path: 'my-team',
-                element: <MyTeam></MyTeam>
-            },
-            {
-                path: 'all-request',
-                element: <AllRequestsPage></AllRequestsPage>
-            }, {
-                path: 'my-employee',
-                element: <MyEmployeeList></MyEmployeeList>
-            }, {
-                path: 'profile',
-                element: <Profile></Profile>
-            }
+        children: [{
+            index: true,
+            element: <Profile></Profile>
+        },
+        {
+            path: 'add-asset',
+            element: <AddAsset></AddAsset>
+        }, {
+            path: 'asset-list',
+            element: <AssetList></AssetList>
+        }, {
+            path: "request-asset",
+            element: <RequestAsset></RequestAsset>
+        }, {
+            path: 'my-team',
+            element: <MyTeam></MyTeam>
+        },
+        {
+            path: 'all-request',
+            element: <AllRequestsPage></AllRequestsPage>
+        }, {
+            path: 'my-employee',
+            element: <MyEmployeeList></MyEmployeeList>
+        }, {
+            path: 'my-asset',
+            element: <MyAssets />
+
+        }
         ]
     }
 ]);

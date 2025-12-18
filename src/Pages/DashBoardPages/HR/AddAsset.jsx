@@ -44,9 +44,9 @@ const AddAsset = () => {
             data.assetImage = imageURL;
             data.createAt = new Date();
             data.companyName = company;
+            toast.success("Successfully Added")
             axios.post("http://localhost:3000/allAsset", data)
 
-            toast.success("Successfully added")
         } catch (error) {
             console.log(error.message);
         }
