@@ -15,6 +15,7 @@ import AllRequestsPage from "../Pages/DashBoardPages/HR/AllRequestPage";
 import MyEmployeeList from "../Pages/DashBoardPages/HR/MyEmployeeList";
 import Profile from "../Shared/Profile";
 import MyAssets from "../Pages/DashBoardPages/Employee/MyAssets";
+import Package from "../Pages/DashBoardPages/HR/Package";
 
 export const router = createBrowserRouter([
     {
@@ -74,6 +75,10 @@ export const router = createBrowserRouter([
             path: 'my-asset',
             element: <MyAssets />
 
+        },
+        {
+            path: 'packages',
+            element: <Package></Package>
         }
         ]
     }

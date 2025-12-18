@@ -121,7 +121,7 @@ const DashDoard = () => {
                             </li>
 
                             <li>
-                                {userInfo?.role === 'hr' && <Link to="/" className="is-drawer-close:tooltip is-drawer-close:tooltip-right" >
+                                {userInfo?.role === 'hr' && <Link to="/dashboard/packages" className="is-drawer-close:tooltip is-drawer-close:tooltip-right" >
                                     {/* Home icon */}
                                     <GrUpgrade />
                                     <span className="is-drawer-close:hidden"> Upgrade Package</span>
