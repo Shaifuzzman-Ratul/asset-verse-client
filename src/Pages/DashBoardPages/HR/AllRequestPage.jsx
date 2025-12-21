@@ -6,13 +6,19 @@ import { AuthContext } from '../../../Context/AuthContext/AuthContext';
 
 const AllRequestsPage = () => {
     const { user } = use(AuthContext)
+
+
     const { data: assetRequests = [], refetch } = useQuery({
-        queryKey: ['allRequests'],
+        queryKey: ['assetRequests', user?.email],
+        enabled: !!user?.email,
         queryFn: async () => {
-            const res = await axios.get('http://localhost:3000/assetRequest');
+            const res = await axios.get(
+                `http://localhost:3000/assetRequest?hrEmail=${user.email}`
+            );
             return res.data;
         },
     });
+
 
     const hrMail = user.email;
     const { data: allUser = [] } = useQuery({
@@ -28,6 +34,11 @@ const AllRequestsPage = () => {
 
 
     const handleApprove = async (request) => {
+        if (allUser[0]?.packageLimit === 0) {
+            toast.error('Package limit reached! Please upgrade your package.');
+            return;
+        }
+
         await axios.put(`http://localhost:3000/assetRequest/${request._id}`, {
             requestStatus: 'approved',
             approvalDate: new Date(),
@@ -47,6 +58,7 @@ const AllRequestsPage = () => {
                 companyLogo: allUser[0].companyLogo,
             });
         }
+        await axios.patch('http://localhost:3000/users/hr/package', { hrEmail: hrMail });
         toast.success('Request approved');
         refetch();
     };

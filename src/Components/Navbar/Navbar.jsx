@@ -11,16 +11,12 @@ const Navbar = () => {
     const [dbUser, setDbUser] = useState(null);
     const email = user?.email;
 
-    /* ---------------- FETCH USER FROM DB ---------------- */
     useEffect(() => {
         if (!email) return;
 
-        axios
-            .get(`http://localhost:3000/users?email=${email}`)
-            .then((res) => setDbUser(res.data?.[0]))
-            .catch((err) =>
-                console.error("Failed to load user profile", err)
-            );
+        axios.get(`http://localhost:3000/users?email=${email}`).then((res) => setDbUser(res.data?.[0])).catch((err) =>
+            console.error(err)
+        );
     }, [email]);
 
     const handleLogout = () => {
@@ -29,7 +25,7 @@ const Navbar = () => {
             .catch((error) => toast.error(error.message));
     };
 
-    /* ---------------- AVATAR LOGIC ---------------- */
+
     const avatarSrc =
         dbUser?.role === "hr"
             ? dbUser?.companyLogo || "https://i.ibb.co/2kR9zZS/user.png"
@@ -45,7 +41,7 @@ const Navbar = () => {
                     data-tip={dbUser?.hrName || user?.displayName || user?.email}
                 >
                     <div className="dropdown">
-                        {/* BAR BUTTON */}
+
                         <label
                             tabIndex={0}
                             className="btn btn-ghost flex items-center gap-2"
@@ -56,7 +52,7 @@ const Navbar = () => {
                             </span>
                         </label>
 
-                        {/* BAR DROPDOWN MENU */}
+
                         <ul
                             tabIndex={0}
                             className="menu dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52 z-50"
@@ -104,7 +100,6 @@ const Navbar = () => {
                 </div>
             </div>
 
-            {/* ================= CENTER ================= */}
             <div className="navbar-center hidden md:flex gap-6 font-semibold">
                 <NavLink
                     to="/"
@@ -134,7 +129,7 @@ const Navbar = () => {
                 </NavLink>
             </div>
 
-            {/* ================= RIGHT ================= */}
+
             <div className="navbar-end gap-3">
                 <div className="dropdown dropdown-end">
                     <label

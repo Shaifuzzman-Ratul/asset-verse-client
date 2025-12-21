@@ -16,6 +16,8 @@ import MyEmployeeList from "../Pages/DashBoardPages/HR/MyEmployeeList";
 import Profile from "../Shared/Profile";
 import MyAssets from "../Pages/DashBoardPages/Employee/MyAssets";
 import Package from "../Pages/DashBoardPages/HR/Package";
+import PaymentCencel from "../Pages/Payment/PaymentCencel";
+import PaymentSuccess from "../Pages/Payment/PaymentSuccess";
 
 export const router = createBrowserRouter([
     {
@@ -79,6 +81,14 @@ export const router = createBrowserRouter([
         {
             path: 'packages',
             element: <Package></Package>
+        },
+        {
+            path: 'payment-success',
+            element: <PaymentSuccess></PaymentSuccess>
+        }
+            , {
+            path: 'payment-cancel',
+            element: <PaymentCencel></PaymentCencel>
         }
         ]
     }

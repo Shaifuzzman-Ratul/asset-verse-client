@@ -107,7 +107,7 @@ const HrRegister = () => {
                         {errors.HRDoB && <p className='text-xs text-red-500'>{errors.HRDoB.message}</p>}
 
 
-                        <button className={`btn btn-neutral mt-4 ${user ? 'bg-gray-600' : 'bg-green-800'} text-white border-none `} disabled={!user}>
+                        <button className={`btn btn-neutral mt-4 ${user ? 'bg-gray-600' : 'bg-green-800'} text-white border-none `}>
                             {user ? "Already Login" : "Register Now"}</button>
                     </fieldset>
 

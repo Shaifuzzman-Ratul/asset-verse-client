@@ -7,19 +7,6 @@ import { FaUsers, FaBirthdayCake } from "react-icons/fa";
 const MyTeam = () => {
     const { user } = useContext(AuthContext);
     const [selectedCompany, setSelectedCompany] = useState(null);
-
-    const { data: approvedRequests = [], isLoading } = useQuery({
-        queryKey: ["approvedRequests"],
-        enabled: !!user?.email,
-        queryFn: async () => {
-            const res = await axios.get(
-                "http://localhost:3000/assetRequest?requestStatus=approved"
-            );
-            return res.data;
-        },
-    });
-
-
     const { data: users = [] } = useQuery({
         queryKey: ["users"],
         queryFn: async () => {
@@ -27,43 +14,51 @@ const MyTeam = () => {
             return res.data;
         },
     });
+    const { data: myAffiliations = [], isLoading } = useQuery({
+        queryKey: ["myAffiliations", user?.email],
+        enabled: !!user?.email,
+        queryFn: async () => {
+            const res = await axios.get(
+                `http://localhost:3000/employeeAffiliations?employeeEmail=${user.email}`
+            );
+            return res.data;
+        },
+    });
 
-    const myCompanies = [
-        ...new Set(
-            approvedRequests
-                .filter((req) => req.requesterEmail === user?.email)
-                .map((req) => req.companyName)
-        ),
-    ];
-
+    const myCompanies = [...new Set(myAffiliations.map((a) => a.companyName))];
     const activeCompany = selectedCompany || myCompanies[0];
 
 
-    const teamMembers = Object.values(
-        approvedRequests
-            .filter(
-                (req) =>
-                    req.companyName === activeCompany &&
-                    req.requesterEmail !== user?.email
-            )
-            .reduce((acc, req) => {
-                if (!acc[req.requesterEmail]) {
-                    const userInfo = users.find(
-                        (u) => u.email === req.requesterEmail
-                    );
+    const { data: companyMembers = [] } = useQuery({
+        queryKey: ["companyMembers", activeCompany],
+        enabled: !!activeCompany,
+        queryFn: async () => {
+            const res = await axios.get(
+                `http://localhost:3000/employeeAffiliations?companyName=${activeCompany}`
+            );
+            return res.data;
+        },
+    });
 
-                    acc[req.requesterEmail] = {
-                        name: req.requesterName || "Employee",
-                        email: req.requesterEmail,
-                        companyName: req.companyName,
-                        profileImage: userInfo?.profileImage,
-                        position: userInfo?.position || "Employee",
-                        dateOfBirth: userInfo?.dateOfBirth,
-                    };
-                }
-                return acc;
-            }, {})
-    );
+
+    const teamMembers = companyMembers
+        .filter((m) => m.employeeEmail !== user?.email)
+        .map((m) => {
+            const profile = users.find((u) => u.email === m.employeeEmail);
+            return {
+                name: profile?.employeeName || "Employee",
+                email: m.employeeEmail,
+                position: profile?.position || "Employee",
+                profileImage:
+                    profile?.employeeLogo || "https://i.ibb.co/2kR9zZS/user.png",
+                dateOfBirth: profile?.dateOfBirth,
+            };
+        })
+
+        .filter(
+            (member, index, self) =>
+                index === self.findIndex((m) => m.email === member.email)
+        );
 
 
     const currentMonth = new Date().getMonth();
@@ -75,21 +70,19 @@ const MyTeam = () => {
 
     if (isLoading) {
         return (
-            <div className="flex justify-center items-center h-64">
-                <span className="loading loading-spinner loading-lg"></span>
-            </div>
+            <p>Loading...</p>
+
         );
     }
 
     return (
-        <div className="p-6 space-y-6 bg-gray-200">
-            {/* Header */}
+        <div className="p-6 space-y-6 bg-gray-100">
+
             <div className="flex items-center gap-3">
                 <FaUsers className="text-2xl text-primary" />
                 <h1 className="text-2xl font-bold">My Team</h1>
             </div>
 
-            {/* Company Selector */}
             <div className="card bg-base-100 shadow w-full md:w-1/3">
                 <div className="card-body p-4">
                     <label className="font-semibold mb-2">Select Company</label>
@@ -108,14 +101,14 @@ const MyTeam = () => {
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                {/* Team Members */}
+
                 <div className="lg:col-span-2">
                     <h2 className="text-lg font-semibold mb-4">
                         Team Members — {activeCompany}
                     </h2>
 
                     {teamMembers.length === 0 ? (
-                        <p className="text-gray-500">No other team members found.</p>
+                        <p className="text-gray-500">No team members found.</p>
                     ) : (
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                             {teamMembers.map((member, idx) => (
@@ -125,18 +118,13 @@ const MyTeam = () => {
                                 >
                                     <div className="card-body flex flex-row gap-4 items-center">
                                         <img
-                                            src={
-                                                member.profileImage ||
-                                                "https://i.ibb.co/2kR9zZS/user.png"
-                                            }
+                                            src={member.profileImage}
                                             alt={member.name}
                                             className="w-16 h-16 rounded-full object-cover"
                                         />
                                         <div>
                                             <h3 className="font-bold">{member.name}</h3>
-                                            <p className="text-sm text-gray-500">
-                                                {member.position}
-                                            </p>
+                                            <p className="text-sm text-gray-500">{member.position}</p>
                                             <p className="text-sm">{member.email}</p>
                                         </div>
                                     </div>
@@ -146,28 +134,20 @@ const MyTeam = () => {
                     )}
                 </div>
 
-                {/* Birthdays */}
                 <div>
                     <div className="card bg-base-100 shadow">
                         <div className="card-body">
                             <div className="flex items-center gap-2 mb-3">
                                 <FaBirthdayCake className="text-xl text-secondary" />
-                                <h2 className="font-semibold text-lg">
-                                    Upcoming Birthdays
-                                </h2>
+                                <h2 className="font-semibold text-lg">Upcoming Birthdays</h2>
                             </div>
 
                             {birthdays.length === 0 ? (
-                                <p className="text-gray-500 text-sm">
-                                    No birthdays this month 🎉
-                                </p>
+                                <p className="text-gray-500 text-sm">No birthdays this month 🎉</p>
                             ) : (
                                 <ul className="space-y-3">
                                     {birthdays.map((b, idx) => (
-                                        <li
-                                            key={idx}
-                                            className="flex justify-between border-b pb-2"
-                                        >
+                                        <li key={idx} className="flex justify-between border-b pb-2">
                                             <span>{b.name}</span>
                                             <span className="text-sm text-gray-500">
                                                 {new Date(b.dateOfBirth).toLocaleDateString()}
