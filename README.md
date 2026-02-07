@@ -5,37 +5,37 @@ Live Site:(https://asseet-verse360.netlify.app/)
 AssetVerse is a modern, corporate Asset Management web platform that helps companies efficiently track, assign, and manage their physical assets such as laptops, keyboards, chairs, and other equipment. The system enables HR managers to control company assets, approve employee requests, and monitor asset usage in real time, while employees can request, view, and return assigned assets across multiple companies. AssetVerse ensures accountability, reduces asset loss, and streamlines HR operations through a secure and scalable system.
 
 ## Features
-User Authentication: Login & Registration using Email/Password and Google OAuth
+- User Authentication: Login & Registration using Email/Password and Google OAuth
 
-Role-Based Access: Separate dashboards for HR Managers and Employees
+- Role-Based Access: Separate dashboards for HR Managers and Employees
 
-Protected Routes: Private pages accessible only to authenticated users
+- Protected Routes: Private pages accessible only to authenticated users
 
-Home Page: Corporate banner with company overview, packages, and key features
+- Home Page: Corporate banner with company overview, packages, and key features
 
-Asset Inventory: HR can add, update, and delete company assets
+- Asset Inventory: HR can add, update, and delete company assets
 
-Asset Request System: Employees can request assets with approval workflow
+- Asset Request System: Employees can request assets with approval workflow
 
-Auto-Affiliation: Employees become affiliated with companies on first approved request
+- Auto-Affiliation: Employees become affiliated with companies on first approved request
 
-My Assets Page: Employees view assets assigned from all companies
+- My Assets Page: Employees view assets assigned from all companies
 
-My Team Page: Employees can see colleagues per affiliated company
+- My Team Page: Employees can see colleagues per affiliated company
 
-Employee Management: HR can view and manage affiliated employees
+- Employee Management: HR can view and manage affiliated employees
 
-Package Management: Employee limit enforcement with Stripe-based upgrades
+- Package Management: Employee limit enforcement with Stripe-based upgrades
 
-Returnable Assets: Employees can return returnable items (optional feature)
+- Returnable Assets: Employees can return returnable items (optional feature)
 
-Dynamic Page Titles: Each route displays a descriptive page title
+- Dynamic Page Titles: Each route displays a descriptive page title
 
-Responsive Design: Mobile, tablet, and desktop optimized layout
+- Responsive Design: Mobile, tablet, and desktop optimized layout
 
-Real-Time Feedback: Toast notifications for success, errors, and warnings
+- Real-Time Feedback: Toast notifications for success, errors, and warnings
 
-Client-Side Validation: Prevent invalid requests and submissions
+- Client-Side Validation: Prevent invalid requests and submissions
 
 Analytics Dashboard: Charts for asset distribution and request statistics
 ## 🧰 Tech Stack
