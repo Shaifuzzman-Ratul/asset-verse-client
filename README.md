@@ -37,7 +37,7 @@ AssetVerse is a modern, corporate Asset Management web platform that helps compa
 
 - Client-Side Validation: Prevent invalid requests and submissions
 
-Analytics Dashboard: Charts for asset distribution and request statistics
+- Analytics Dashboard: Charts for asset distribution and request statistics
 ## 🧰 Tech Stack
 
 ### 🌐 Frontend
